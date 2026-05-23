@@ -1,184 +1,142 @@
-# 🛒 Supermarket Data Pipeline — ETL + Reporting
+# 🛒 SuperMart Daily — ETL Pipeline Project
 
-<div align="center">
+> **End-to-end data engineering project**: HTML booking form → CSV Extract → Python/Pandas Transform → SQL Load → Power BI Reports
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![SQL](https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
-![ETL](https://img.shields.io/badge/ETL%20Pipeline-00897B?style=for-the-badge&logo=apacheairflow&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active-00d4aa?style=for-the-badge)
-
-**A full end-to-end data pipeline for supermarket sales — from raw data ingestion to interactive Power BI reporting.**
-
-[🌐 Live Demo](https://nkarthik81060-git.github.io/supermarket_karthik/) · [📂 Repository](https://github.com/nkarthik81060-git/supermarket_karthik) · [👤 Author](https://www.linkedin.com/in/nagiri-karthik-data-analyst/)
-
-</div>
+[![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://python.org)
+[![Pandas](https://img.shields.io/badge/Pandas-2.0+-green?logo=pandas)](https://pandas.pydata.org)
+[![SQLite](https://img.shields.io/badge/SQLite-3-blue?logo=sqlite)](https://sqlite.org)
+[![Flask](https://img.shields.io/badge/Flask-3.0-black?logo=flask)](https://flask.palletsprojects.com)
 
 ---
 
-## 📌 Project Overview
-
-This project implements a **complete supermarket data pipeline** that ingests raw sales data, transforms and cleans it using Python and SQL, and delivers actionable insights through a Power BI dashboard.
-
-The goal is to help supermarket stakeholders understand:
-- 📈 Sales trends across product categories and time periods
-- 🏷️ Top-selling products and underperformers
-- 👥 Customer purchase patterns and behaviour
-- 💰 Revenue, profit margins, and branch performance
-
----
-
-## 🏗️ Architecture
+## 📐 Architecture
 
 ```
-Raw Data (CSV)
-      │
-      ▼
- Python ETL Layer
-  ├── Data Extraction
-  ├── Data Cleaning & Transformation
-  └── Data Loading
-      │
-      ▼
-  SQL Database
-  ├── Staging Tables
-  ├── Transformed Tables
-  └── Reporting Views
-      │
-      ▼
- Power BI Dashboard
-  ├── Sales Analysis
-  ├── Product Performance
-  ├── Customer Insights
-  └── Branch Comparisons
+📥 Extract          🔧 Transform         🗄️ Load            📊 Report
+─────────────────   ──────────────────   ───────────────    ──────────────
+HTML Booking Form → CSV Raw Data     →  Python + Pandas  → SQL Database → Power BI
+(templates/)        (data/raw/*.csv)     (etl/transform)   (supermart.db)  (Dashboard)
 ```
-
----
-
-## ✨ Features
-
-| Feature | Description |
-|---|---|
-| 🔁 **ETL Pipeline** | Automated extraction, transformation and loading of raw supermarket CSV data |
-| 🧹 **Data Cleaning** | Handles missing values, duplicates, data type fixes and standardisation |
-| 🗄️ **SQL Storage** | Structured staging and reporting tables for clean, queryable data |
-| 📊 **Power BI Reports** | Interactive dashboard with filters by branch, product, date and category |
-| 📈 **Sales Analysis** | Revenue trends, daily/monthly sales comparison and growth tracking |
-| 🏪 **Branch Performance** | Side-by-side comparison across supermarket branches |
-| 🛍️ **Product Insights** | Top and bottom performing products by category |
-| 👥 **Customer Analysis** | Purchase frequency, average basket size and customer segmentation |
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|---|---|
-| **Language** | Python 3.x |
-| **Data Processing** | Pandas, NumPy |
-| **Database** | SQL (MySQL / SQLite) |
-| **Reporting** | Microsoft Power BI |
-| **Version Control** | Git & GitHub |
-
----
 
 ## 📁 Project Structure
 
 ```
 supermarket_karthik/
 │
-├── data/
-│   ├── raw/                  # Raw input CSV files
-│   └── processed/            # Cleaned and transformed data
+├── templates/
+│   └── index.html          ← Daily product booking UI (HTML/CSS/JS)
 │
 ├── etl/
-│   ├── extract.py            # Data extraction scripts
-│   ├── transform.py          # Cleaning and transformation logic
-│   └── load.py               # Loading data into SQL
+│   ├── extract.py          ← Stage 1: Read CSV files
+│   ├── transform.py        ← Stage 2: Clean & enrich with Pandas
+│   ├── load.py             ← Stage 3: Insert into SQLite/PostgreSQL
+│   └── pipeline.py         ← Orchestrator: runs all 3 stages
 │
-├── sql/
-│   ├── create_tables.sql     # Table schema definitions
-│   ├── staging.sql           # Staging layer queries
-│   └── reporting_views.sql   # Views used by Power BI
+├── database/
+│   └── schema.sql          ← Full DDL + Power BI views
 │
-├── dashboard/
-│   └── supermarket_report.pbix  # Power BI dashboard file
+├── data/
+│   ├── raw/                ← CSV files from HTML form (auto-created)
+│   └── processed/          ← Transformed CSVs (auto-created)
 │
-├── requirements.txt          # Python dependencies
+├── reports/
+│   └── powerbi_guide.md    ← Power BI connection & dashboard guide
+│
+├── app.py                  ← Flask server (serves form + receives bookings)
+├── requirements.txt
 └── README.md
 ```
 
----
+## 🚀 Quick Start
 
-## 🚀 Getting Started
-
-### Prerequisites
+### 1. Clone & Install
 ```bash
-Python 3.8+
-MySQL or SQLite
-Microsoft Power BI Desktop
-```
-
-### Installation
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/nkarthik81060-git/supermarket_karthik.git
-
-# 2. Navigate to the project folder
+git clone https://github.com/nkarthik81060-git/supermarket_karthik
 cd supermarket_karthik
-
-# 3. Install Python dependencies
 pip install -r requirements.txt
-
-# 4. Run the ETL pipeline
-python etl/extract.py
-python etl/transform.py
-python etl/load.py
-
-# 5. Open the SQL scripts to set up the database
-# Run sql/create_tables.sql first, then staging.sql
-
-# 6. Open dashboard/supermarket_report.pbix in Power BI Desktop
 ```
 
----
+### 2. Run the Web App
+```bash
+python app.py
+# Open http://localhost:5000
+```
 
-## 📊 Dashboard Preview
+### 3. Book Products
+- Open the browser, select daily products, fill customer details
+- Click **BOOK & EXTRACT DATA**
+- CSV is saved to `data/raw/bookings_YYYY-MM-DD.csv`
 
-> 🔗 **[View Live Demo →](https://nkarthik81060-git.github.io/supermarket_karthik/)**
+### 4. Run ETL Pipeline
+```bash
+# With sample data (for testing)
+python -m etl.pipeline --sample
 
-The Power BI dashboard includes:
+# Process today's bookings
+python -m etl.pipeline
 
-- **Overview Page** — Total revenue, transactions, average order value
-- **Sales Trends** — Daily, weekly and monthly sales charts
-- **Product Analysis** — Category-wise breakdown and top products
-- **Branch Comparison** — Performance metrics across all branches
-- **Customer Insights** — Purchase patterns and segmentation
+# Process specific date
+python -m etl.pipeline --date 2025-01-15
+```
 
----
-
-## 📈 Key Insights Delivered
-
-- Identified **top revenue-generating product categories** across branches
-- Tracked **month-on-month sales growth** for business forecasting
-- Highlighted **peak shopping hours and days** for staffing decisions
-- Compared **branch performance** to flag underperforming locations
-- Analysed **customer basket size trends** for pricing strategy
-
----
-
-## 🤝 Author
-
-**Nagiri Karthik** — Data Analyst at TCS, Bengaluru
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/nagiri-karthik-data-analyst/)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/nkarthik81060-git)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-00d4aa?style=flat-square&logo=githubpages)](https://nkarthik81060-git.github.io/karthik_profile/)
-[![Email](https://img.shields.io/badge/Email-Contact-D14836?style=flat-square&logo=gmail)](mailto:karthiknagiri554658@gmail.com)
+### 5. Connect Power BI
+1. Open Power BI Desktop
+2. **Get Data → SQLite** (or ODBC) → select `database/supermart.db`
+3. Load views: `vw_daily_revenue`, `vw_top_products`, `vw_payment_analysis`
+4. Build dashboards from pre-built views
 
 ---
 
-<div align="center">
-  <sub>⭐ If you found this project useful, please give it a star!</sub>
-</div>
+## 🔧 ETL Pipeline Details
+
+### Stage 1 — Extract (`etl/extract.py`)
+- Reads all `*.csv` from `data/raw/`
+- Supports date filtering
+- Combines multiple files into single DataFrame
+
+### Stage 2 — Transform (`etl/transform.py`)
+| Step | Action |
+|------|--------|
+| Schema validation | Check required columns, fill missing |
+| Type coercion | Parse dates, numeric types |
+| Text cleaning | Strip whitespace, title-case names |
+| Category normalization | Map aliases → standard categories |
+| Financial recalculation | Recalculate total = qty × price + 5% tax |
+| Enrichment | Add year, month, day_of_week, revenue_tier |
+| Deduplication | Remove duplicate order+product pairs |
+| Aggregation | Build daily_sales, category_sales tables |
+
+### Stage 3 — Load (`etl/load.py`)
+- **Target DB**: SQLite (`database/supermart.db`) — swap for PostgreSQL in production
+- **Strategy**: Idempotent — daily aggregations replaced, items appended
+- **Tables**: `orders`, `order_items`, `daily_sales`, `category_sales`, `etl_run_log`
+- **Views**: Pre-built SQL views for Power BI DirectQuery
+
+---
+
+## 📊 Power BI Views
+
+| View | Purpose |
+|------|---------|
+| `vw_daily_revenue` | Revenue trend by date |
+| `vw_category_performance` | Sales by product category |
+| `vw_top_products` | Top 20 products by revenue |
+| `vw_payment_analysis` | Payment method breakdown |
+| `vw_weekly_kpis` | Weekly aggregated KPIs |
+
+---
+
+## 🛒 Products Covered
+
+| Category | Products |
+|----------|---------|
+| 🥦 Vegetables | Tomato, Onion, Potato, Spinach, Carrot, Capsicum |
+| 🍎 Fruits | Apple, Banana, Mango, Grapes |
+| 🥛 Dairy | Milk, Curd, Paneer, Butter |
+| 🌾 Grains | Rice, Wheat, Dal, Poha |
+| 🍪 Snacks | Biscuits, Chips |
+
+---
+
+## 👤 Author
+**Karthik** — [GitHub: nkarthik81060-git](https://github.com/nkarthik81060-git)
