@@ -1,1 +1,7 @@
-
+services:
+  - type: web
+    name: supermarket_karthik
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    plan: free
